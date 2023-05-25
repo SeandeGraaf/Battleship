@@ -1,27 +1,20 @@
 package battleship;
 
-public class SeaField {
+public class SeaField1 {
     private final int rows;
     private final int columns;
     private final String[][] seaGrid;
 
-    public SeaField(int rows, int columns) {
+    public SeaField1(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
         this.seaGrid = new String[rows][columns];
         initializeSea();
     }
 
-    public SeaField(int rows, int columns, String[][] seaGrid) {
-        this.rows = rows;
-        this.columns = columns;
-        this.seaGrid = seaGrid;
-    }
-
     public String[][] getSeaGrid() {
         return seaGrid;
     }
-
 
     private void initializeSea() {
         for (int i = 0; i < rows; i++) {

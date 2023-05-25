@@ -1,51 +1,44 @@
 package battleship;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-
-
 public class ShipPlacer {
-    static String[] shipTypes;
-    private Field field;
+    private FieldPlayer1 field;
+    private List<Ship> ships;
     private String currentShip;
 
-    public String getCurrentShip() {
-        return currentShip;
-    }
-
-    public ShipPlacer(Field field) {
+    public ShipPlacer(FieldPlayer1 field) {
         this.field = field;
+        this.ships = new ArrayList<>();
     }
 
-    public Field getField() {
-        return field;
+    public List<Ship> getShips() {
+        return ships;
     }
 
-    public void shipPlace (){
+    public void placeShips() {
         Scanner scanner = new Scanner(System.in);
-        shipTypes = new String[]{"Aircraft Carrier", "Battleship", "Submarine", "Cruiser", "Destroyer"};
+        String[] shipTypes = {"Aircraft Carrier", "Battleship", "Submarine", "Cruiser", "Destroyer"};
         int[] shipSizes = {5, 4, 3, 3, 2};
+
         for (int i = 0; i < shipTypes.length; i++) {
+            currentShip = shipTypes[i];
             boolean validPlacement = false;
             while (!validPlacement) {
-                System.out.print("Enter the coordinates of the " + shipTypes[i] + " (" + shipSizes[i] + " cells): ");
-                currentShip = shipTypes[i];
-                validPlacement = placeShip(shipSizes[i]);
+                System.out.print("Enter the coordinates of the " + currentShip + " (" + shipSizes[i] + " cells): ");
+                validPlacement = placeShip(currentShip, shipSizes[i]);
                 if (!validPlacement) {
                     // Skip printing the field when there is an input mistake
                     continue;
                 }
                 field.printField();
             }
-            // Request the coordinates of the next ship
-            if (i < shipTypes.length - 1) {
-                System.out.print("Enter the coordinates of the " + shipTypes[i+1] + " (" + shipSizes[i+1] + " cells): ");
-            }
         }
-        System.out.println("The game starts!");
     }
 
-    public boolean placeShip(int size) {
+    public boolean placeShip(String shipType, int size) {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().toUpperCase();
         String[] coordinates = input.split(" ");
@@ -63,7 +56,6 @@ public class ShipPlacer {
         int startColumn = Integer.parseInt(start.substring(1));
         int endRow = end.charAt(0) - field.getStartRow() + 1;
         int endColumn = Integer.parseInt(end.substring(1));
-
 
         // Swap coordinates if start is greater than end
         if (startRow > endRow || startColumn > endColumn) {
@@ -83,7 +75,7 @@ public class ShipPlacer {
 
         // Check if the ship size is valid
         if (Math.abs(startRow - endRow) + 1 != size && Math.abs(startColumn - endColumn) + 1 != size) {
-            System.out.println("Error! Wrong length of the " + currentShip + "! Try again:");  // Nog verbeteren
+            System.out.println("Error! Wrong length of the " + currentShip + "! Try again:");
             return false;
         }
 
